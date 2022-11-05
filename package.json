@@ -1,0 +1,25 @@
+{
+  "name": "dev_test",
+  "version": "1.0.0",
+  "description": "This is the dev test for Nubelacorp",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build"
+  },
+  "keywords": [
+    "docker",
+    "Nubelacorp",
+    "socket"
+  ],
+  "dependencies": {
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  },
+  "author": "<id.khoerulumam@gmail.com> Khoerul Umam",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.11.9"
+  }
+}

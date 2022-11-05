@@ -1,0 +1,7 @@
+version: '3'
+services:
+  devtest:
+    build:
+      context: .
+    volumes:
+      - /var/run/docker.sock:/var/run/dev-test/sock/:rw
