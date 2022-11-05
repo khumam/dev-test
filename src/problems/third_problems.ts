@@ -1,4 +1,5 @@
 function subtitue(expression: any) {
+  console.log(expression);
   if (expression.length == 2) {
     const lhs: any = expression[0];
     const rhs: any = expression[1];
@@ -8,8 +9,11 @@ function subtitue(expression: any) {
       const structure = lhs.split(".");
       return (structure[1].replace("!", "") == structure[2].substring(1,2).replace("(", "")) ? `!z.${structure[2].substring(0,2).replace(/[a-z]/, "z")} ${rhs})` : `!z.(${rhs} ${structure[2].substring(3,5).replace(/[a-z]/, "z")}`
     } else if (/^\![a-z].\(\![a-z].\![a-z].\([a-z] [a-z]\) [a-z]\)$/.test(lhs)) {
-      return `!z.(${rhs} z)`
+      return `!z.(${rhs} z)`;
     } else if (lhs.length > 0) {
+      if (/\![a-z].\![a-z].\([a-z] [a-z]\) \![a-z].\![a-z].\([a-z] [a-z]\)/.test(lhs[0] + " " + lhs[1])) {
+        return `!z.(z ${rhs})`;
+      }
       return rhs;
     }
   } else if (expression.length == 3) {
@@ -25,8 +29,8 @@ function subtitue(expression: any) {
 }
 
 function parser(expression: any): any {
-  if (typeof expression == "object") {
-    const results: any = [];
+  if (typeof expression === "object") {
+    let results: any = [];
     expression.forEach((value: any, index: number) => {
       results.push(parser(value));
     });
@@ -39,15 +43,15 @@ function parser(expression: any): any {
     if (expression.startsWith("(") && expression.endsWith(")")) {
       var expressionValue = expression.slice(1, -1);
       if (expressionValue.includes(") (")) {
-        const value = [expressionValue.split(") (")[0] + ")", "(" + expressionValue.split(") (")[1]];
-        return parser(value);
+        expressionValue = [expressionValue.split(") (")[0] + ")", "(" + expressionValue.split(") (")[1]];
+        return parser(expressionValue);
       } else if (/\) [a-z]/.test(expression)) {
         var variable = expressionValue.match(/\) [a-z]/)[0];
-        const value = [expressionValue.split(/\) [a-z]/)[0] + ")", variable.slice(2)];
-        return parser(value);
+        expressionValue = [expressionValue.split(/\) [a-z]/)[0] + ")", variable.slice(2)];
+        return parser(expressionValue);
       } else if (/\) \!/.test(expression)) {
-        const value = [expressionValue.split(/\) \!/)[0] + ")", "!" + expressionValue.split(/\) \!/)[1]];
-        return parser(value);
+        expressionValue = [expressionValue.split(/\) \!/)[0] + ")", "!" + expressionValue.split(/\) \!/)[1]];
+        return parser(expressionValue);
       } else if (expressionValue.includes(" ")) {
         expressionValue = expressionValue.split(" ");
         return expressionValue;
@@ -76,7 +80,7 @@ function evaluate(expression: string) {
   return subtitue(token);
 }
 
-const solveProblemThree = (data: any): string => {
+const solveProblemThree = (data: any): any => {
   const expression: string = evaluate(data.params.expression);
   const results = JSON.stringify({ id: data.id, result: { expression: expression } }) + "\n";
   return results;

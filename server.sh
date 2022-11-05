@@ -4,5 +4,5 @@ docker run \
 	--network none \
 	--memory 1g \
 	-v $(pwd)/sock:/var/run/dev-test \
-	dev-test-proxycurl \
+	khumam/dev-test:latest \
   /var/run/dev-test/sock
